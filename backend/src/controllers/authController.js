@@ -38,6 +38,9 @@ const requestRefreshToken = async (req, res, next) => {
         jwt.verify(refreshTokenFromClient, env.JWT_REFRESH_KEY, (err, user) => {
             if (err) next(err);
             const newAccessToken = generateAccessToken(user);
+            // const newRefreshToken = generateRefreshToken(user);
+            // await authService.deleteToken(refreshTokenFromClient);
+            // await authService.addToken(newRefreshToken);
             return res.status(200).json({ accessToken: newAccessToken });
         });
     } catch (error) {
@@ -71,7 +74,6 @@ const login = async (req, res) => {
         res.cookie("refreshToken", refreshToken, {
             path: "/",
             secure: false,
-            // secure: true,
             httpOnly: true,
             sameSite: "strict",
         });
